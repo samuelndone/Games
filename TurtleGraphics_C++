@@ -1,0 +1,220 @@
+#include <iostream>
+using namespace std;
+
+void turtlegr(int, int, int);
+void printFloor(void);
+void Direction(int Command);
+unsigned char Floor[20][20] = {'_'};
+enum Directions {UP, RIGHT, DOWN, LEFT};
+Directions actualDirection = RIGHT;
+int Command;
+int Step;
+int positionY = 0; // when start coordinates
+int positionX = 0;
+bool penPosition = 0; // 0=false=Up
+void Messages(void);
+int main() {
+
+Messages();
+
+// Draw the floor using 2 for loops.
+for(int i = 0; i < 20; i++) {
+for(int j = 0; j < 20; j++){
+Floor[i][j] = '-';}}
+
+cout << "Give command : \n";
+cin >> Command;
+
+// While command is not 9,which closes the program,lets see other commands behaviours
+while(Command != 9){
+if(Command == 2)
+{
+penPosition = 1; //true
+cout << "Pen - Down" << endl;
+}
+
+else if(Command == 1)
+{
+penPosition = 0; //false
+cout << "Pen - Up" << endl;
+}
+
+// If command is equal to 3 or 4,a method which set new the direction is called.
+if(Command == 3 || Command == 4)
+Direction(Command);
+
+// If command is equal to 5,lets move.
+if(Command == 5)
+{
+cout << "Write \",\" then put the spaces." << endl;
+char com;
+cin >> com;
+while(com != ',')
+{
+cout << "\nPlease write \",\" then put the spaces.";
+cin >> com;
+}
+cin >> Step;
+
+if(actualDirection == RIGHT){
+while((positionX + Step-1) > 20){
+cout << "Exceeding the right borders. \nEnter a smaller number : " << endl;
+cin >> Step;
+}}
+
+else if(actualDirection == DOWN){
+while((positionY + Step-1) > 20){
+cout << "Exceeding the down borders. \nEnter a smaller number : " << endl;
+cin >> Step;
+}}
+
+else if(actualDirection == UP){
+while((positionY - Step+1) < 0){
+cout << "Exceeding the up borders. \nEnter a smaller number : " << endl;
+cin >> Step;
+}}
+
+else{
+while((positionX - Step+1) < 0){
+cout << "Exceeding the left borders. \nEnter a smaller number : " << endl;
+cin >> Step;
+}}
+
+turtlegr(Step, positionY, positionX); // After every command ,turtlegr method is called to draw the turtle traces
+
+cout << "Actual position : " << positionY << ":" << positionX << endl;
+
+} // End of command 5
+
+if(Command == 6)
+printFloor();
+cout << "Give command : \n";
+cin >> Command;
+}
+if (Command == 9)
+{
+	cout<<"Game Over !"<<endl;
+}
+return 0;
+} //end of main
+
+
+
+
+// a = Spaces , PosX and PosY are the starting positions.
+void turtlegr(int a, int positiony, int positionx) 
+{
+if(actualDirection == RIGHT)
+{
+for(int i = positiony; i == positiony; i++){
+for(int j = positionx; j < positionx + Step; j++){
+if(penPosition == 1)
+Floor[i][j] = 'X';
+else
+Floor[i][j] = '-';
+}}
+positionX += Step - 1;
+}
+
+else if(actualDirection == DOWN)
+{
+for(int i = positiony; i < positiony + Step; i++){
+for(int j = positionx; j == positionx; j++){
+if(penPosition == 1)
+Floor[i][j] = 'X';
+else
+Floor[i][j] = '-';
+}}
+
+positionY += Step - 1;
+}
+
+else if(actualDirection == LEFT)
+{
+for(int i = positiony; i == positiony; i++){
+for(int j = positionx; j > positionx - Step; j--){
+if(penPosition == 1)
+Floor[i][j] = 'X';
+else
+Floor[i][j] = '-';
+}}
+positionX -= Step - 1;
+}
+
+else if(actualDirection == UP)
+{
+for(int i = positiony; i > positiony - Step; i--){
+for(int j = positionx; j == positionx; j++){
+if(penPosition == 1)
+Floor[i][j] = 'X';
+else
+Floor[i][j] = '-';
+}}
+positionY -= Step - 1;
+}
+} // end of turtlegr
+
+void printFloor(){
+for(int i = 0; i < 20; i++){
+for(int j = 0; j < 20; j++){
+cout << Floor[i][j];
+}
+cout << endl;
+}}
+
+void Direction(int Command)
+{
+if(actualDirection == RIGHT){                      // if we are going to the right
+if(Command == 3){
+actualDirection = DOWN;
+cout << "You just turned to the right."<< endl;
+}
+else if(Command == 4){
+actualDirection = UP;
+cout << "You just turned to the left."<< endl;
+}
+}
+
+else if(actualDirection == DOWN){                  // if we are going down
+if(Command == 3){
+actualDirection = LEFT;
+cout << "You just turned to the right."<< endl;
+}
+else if(Command == 4){
+actualDirection = RIGHT;
+cout << "You just turned to the left."<< endl;
+}}
+else if(actualDirection == LEFT){                  // if we are going to the left
+if(Command == 3){
+actualDirection = UP;
+cout << "You just turned to the right."<< endl;
+}
+else  if(Command == 4){
+actualDirection = DOWN;
+cout << "You just turned to the left."<< endl;
+}}
+else{                                      // if we are going up
+if(Command == 3){
+actualDirection = RIGHT;
+cout << "You just turned to the right."<< endl;
+}
+else if(Command == 4)
+{
+actualDirection = LEFT;
+cout << "You just turned to the left."<< endl;
+}}
+} 
+
+void Messages (){
+cout<<"Turtle Graphics !"<<endl;
+cout<<"\nRules :\n1-When start,pen is up and Turtle direction is to the right."<<endl;
+cout<<"2-To draw,pen must be down.\n"<<endl;
+cout<<"Lets make the turtle draw.Here are the commands :"<<endl;
+cout<<"1 = Pen Up."<<endl;
+cout<<"2 = Pen Down."<<endl;
+cout<<"3 = Turn right."<<endl;
+cout<<"4 = Turn left."<<endl;
+cout<<"5 = Move ( Ex : 5,10 = Turtle move 10 spaces. )"<<endl;
+cout<<"Warning ! Put comma between."<<endl;
+cout<<"6 = Print floor."<<endl;
+cout<<"9 = Exit Game.\n"<<endl;}
